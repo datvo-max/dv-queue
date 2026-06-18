@@ -123,7 +123,7 @@
                     
                     let ticketStr = data.ticket < 10 ? "0" + data.ticket : data.ticket;
                     document.getElementById('displayTicket').innerText = ticketStr;
-                    document.getElementById('displayName').innerText = data.name;
+                    document.getElementById('displayName').innerText = nameInput;
                 }
             })
             .catch(error => {
