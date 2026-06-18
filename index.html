@@ -114,6 +114,7 @@
                     btn.innerText = "NHẬN SỐ THỨ TỰ";
                     btn.disabled = false;
                 } else {
+                    console.log(data);
                     // Thành công: Ghi đè thời gian bốc số hiện tại vào bộ nhớ máy khách
                     localStorage.setItem('lastBookingTime', Date.now());
                     
