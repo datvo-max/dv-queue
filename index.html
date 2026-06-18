@@ -14,6 +14,8 @@
         .btn { background-color: #1a73e8; color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; transition: 0.2s; }
         .btn:hover { background-color: #1557b0; }
         .btn:disabled { background-color: #a0c1ef; cursor: not-allowed; }
+
+        .display-name {font-size: 16px; margin-bottom: 25px; font-style:bold;}
         
         #resultSection, #lockSection { display: none; }
         .ticket-box { font-size: 70px; font-weight: bold; color: #d93025; background-color: #fce8e6; padding: 20px; border-radius: 12px; margin: 20px 0; border: 2px dashed #f5c2c7; }
@@ -34,7 +36,7 @@
 
 <div class="container" id="resultSection">
     <div class="success-text">Đăng ký thành công!</div>
-    <p id="displayName"></p>
+    <p class="display-name" id="displayName"></p>
     <p>Số thứ tự của bạn là:</p>
     <div class="ticket-box" id="displayTicket">--</div>
     <p>Vui lòng chụp màn hình lại và chờ đến lượt phục vụ.</p>
