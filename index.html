@@ -34,6 +34,7 @@
 
 <div class="container" id="resultSection">
     <div class="success-text">Đăng ký thành công!</div>
+    <p id="displayName"></p>
     <p>Số thứ tự của bạn là:</p>
     <div class="ticket-box" id="displayTicket">--</div>
     <p>Vui lòng chụp màn hình lại và chờ đến lượt phục vụ.</p>
@@ -121,6 +122,7 @@
                     
                     let ticketStr = data.ticket < 10 ? "0" + data.ticket : data.ticket;
                     document.getElementById('displayTicket').innerText = ticketStr;
+                    document.getElementById('displayName').innerText = data.name;
                 }
             })
             .catch(error => {
