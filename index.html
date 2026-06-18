@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Bốc Số Thứ Tự Tự Động</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            color: #1a73e8;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        p.subtitle {
+            color: #5f6368;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .number-box {
+            font-size: 80px;
+            font-weight: bold;
+            color: #d93025;
+            background-color: #fce8e6;
+            padding: 20px;
+            border-radius: 12px;
+            display: inline-block;
+            min-width: 150px;
+            margin-bottom: 30px;
+            border: 2px dashed #f5c2c7;
+        }
+        .btn {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            padding: 15px 32px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(26, 115, 232, 0.2);
+        }
+        .btn:hover {
+            background-color: #1557b0;
+        }
+        .btn:active {
+            transform: scale(0.98);
+        }
+        .admin-panel {
+            margin-top: 40px;
+            border-top: 1px solid #dadce0;
+            padding-top: 20px;
+        }
+        .btn-reset {
+            background-color: #747d8c;
+            font-size: 12px;
+            padding: 8px 16px;
+            width: auto;
+        }
+        .btn-reset:hover {
+            background-color: #2f3542;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>XIN VUI LÒNG LẤY SỐ</h1>
+    <p class="subtitle">Bấm nút bên dưới để nhận số thứ tự của bạn</p>
+    
+    <div>
+        <div class="number-box" id="ticketNumber">00</div>
+    </div>
+    
+    <button class="btn" onclick="takeNumber()">BẤM ĐỂ LẤY SỐ</button>
+    
+    <div class="admin-panel">
+        <button class="btn btn-reset" onclick="resetNumber()">Đặt lại về số 0</button>
+    </div>
+</div>
+
+<script>
+    // Khởi tạo số thứ tự từ bộ nhớ máy (nếu có), nếu không có thì bắt đầu từ 0
+    let currentNumber = localStorage.getItem('currentTicketNumber') ? parseInt(localStorage.getItem('currentTicketNumber')) : 0;
+    
+    // Hiển thị số hiện tại lên màn hình khi vừa mở trang web
+    document.getElementById('ticketNumber').innerText = currentNumber < 10 ? '0' + currentNumber : currentNumber;
+
+    function takeNumber() {
+        if (currentNumber >= 50) {
+            alert("Hệ thống đã cấp đủ 50 số cho ngày hôm nay!");
+            return;
+        }
+        currentNumber++;
+        // Cập nhật lên màn hình
+        document.getElementById('ticketNumber').innerText = currentNumber < 10 ? '0' + currentNumber : currentNumber;
+        // Lưu lại vào bộ nhớ trình duyệt đề phòng mất điện/đóng tab
+        localStorage.setItem('currentTicketNumber', currentNumber);
+    }
+
+    function resetNumber() {
+        if (confirm("Bạn có chắc chắn muốn đặt lại số thứ tự về 00 cho ngày mới không?")) {
+            currentNumber = 0;
+            document.getElementById('ticketNumber').innerText = '00';
+            localStorage.setItem('currentTicketNumber', currentNumber);
+        }
+    }
+</script>
+
+</body>
+</html>
