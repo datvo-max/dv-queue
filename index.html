@@ -3,125 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Bốc Số Thứ Tự Tự Động</title>
+    <title>Đăng Ký Lấy Số Thứ Tự</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            background-color: #ffffff;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-            text-align: center;
-            max-width: 400px;
-            width: 100%;
-        }
-        h1 {
-            color: #1a73e8;
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-        p.subtitle {
-            color: #5f6368;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
-        .number-box {
-            font-size: 80px;
-            font-weight: bold;
-            color: #d93025;
-            background-color: #fce8e6;
-            padding: 20px;
-            border-radius: 12px;
-            display: inline-block;
-            min-width: 150px;
-            margin-bottom: 30px;
-            border: 2px dashed #f5c2c7;
-        }
-        .btn {
-            background-color: #1a73e8;
-            color: white;
-            border: none;
-            padding: 15px 32px;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.2s;
-            width: 100%;
-            box-shadow: 0 4px 6px rgba(26, 115, 232, 0.2);
-        }
-        .btn:hover {
-            background-color: #1557b0;
-        }
-        .btn:active {
-            transform: scale(0.98);
-        }
-        .admin-panel {
-            margin-top: 40px;
-            border-top: 1px solid #dadce0;
-            padding-top: 20px;
-        }
-        .btn-reset {
-            background-color: #747d8c;
-            font-size: 12px;
-            padding: 8px 16px;
-            width: auto;
-        }
-        .btn-reset:hover {
-            background-color: #2f3542;
-        }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px;}
+        .container { background-color: #ffffff; padding: 30px; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); width: 100%; max-width: 400px; text-align: center; box-sizing: border-box;}
+        h1 { color: #1a73e8; font-size: 22px; margin-bottom: 5px; }
+        p { color: #5f6368; font-size: 14px; margin-bottom: 25px; }
+        input { width: 100%; padding: 14px; margin-bottom: 15px; border: 1px solid #dcdcdc; border-radius: 8px; font-size: 15px; box-sizing: border-box; outline: none; }
+        input:focus { border-color: #1a73e8; }
+        .btn { background-color: #1a73e8; color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; transition: 0.2s; }
+        .btn:hover { background-color: #1557b0; }
+        .btn:disabled { background-color: #a0c1ef; cursor: not-allowed; }
+        
+        /* Giao diện khi hiện số */
+        #resultSection { display: none; }
+        .ticket-box { font-size: 70px; font-weight: bold; color: #d93025; background-color: #fce8e6; padding: 20px; border-radius: 12px; margin: 20px 0; border: 2px dashed #f5c2c7; }
+        .success-text { color: #1e8e3e; font-weight: bold; margin-bottom: 10px;}
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>XIN VUI LÒNG LẤY SỐ</h1>
-    <p class="subtitle">Bấm nút bên dưới để nhận số thứ tự của bạn</p>
+<div class="container" id="formSection">
+    <h1>THÔNG TIN LẤY SỐ</h1>
+    <p>Vui lòng điền thông tin để nhận số thứ tự</p>
     
-    <div>
-        <div class="number-box" id="ticketNumber">00</div>
-    </div>
+    <input type="text" id="cusName" placeholder="Họ và tên của bạn" required>
+    <input type="tel" id="cusPhone" placeholder="Số điện thoại" required>
     
-    <button class="btn" onclick="takeNumber()">BẤM ĐỂ LẤY SỐ</button>
-    
-    <div class="admin-panel">
-        <button class="btn btn-reset" onclick="resetNumber()">Đặt lại về số 0</button>
-    </div>
+    <button class="btn" id="submitBtn" onclick="getTicket()">NHẬN SỐ THỨ TỰ</button>
+</div>
+
+<div class="container" id="resultSection">
+    <div class="success-text">Đăng ký thành công!</div>
+    <p>Số thứ tự của bạn là:</p>
+    <div class="ticket-box" id="displayTicket">--</div>
+    <p>Vui lòng chụp màn hình lại và chờ nhân viên gọi tên.</p>
 </div>
 
 <script>
-    // Khởi tạo số thứ tự từ bộ nhớ máy (nếu có), nếu không có thì bắt đầu từ 0
-    let currentNumber = localStorage.getItem('currentTicketNumber') ? parseInt(localStorage.getItem('currentTicketNumber')) : 0;
-    
-    // Hiển thị số hiện tại lên màn hình khi vừa mở trang web
-    document.getElementById('ticketNumber').innerText = currentNumber < 10 ? '0' + currentNumber : currentNumber;
+    // THAY LINK Ở DƯỚI BẰNG LINK WEB APP CỦA BẠN
+    const API_URL = "https://script.google.com/macros/s/AKfycbwSpCAMwK4qkj_Qb0MqtcI00lKnaU5H9pjTAANJdCLcaymBodpv5M0FkHxkXiFp-g8gUA/exec";
 
-    function takeNumber() {
-        if (currentNumber >= 50) {
-            alert("Hệ thống đã cấp đủ 50 số cho ngày hôm nay!");
+    function getTicket() {
+        const nameInput = document.getElementById('cusName').value.trim();
+        const phoneInput = document.getElementById('cusPhone').value.trim();
+        const btn = document.getElementById('submitBtn');
+
+        if(nameInput === "" || phoneInput === "") {
+            alert("Vui lòng nhập đầy đủ Họ tên và Số điện thoại!");
             return;
         }
-        currentNumber++;
-        // Cập nhật lên màn hình
-        document.getElementById('ticketNumber').innerText = currentNumber < 10 ? '0' + currentNumber : currentNumber;
-        // Lưu lại vào bộ nhớ trình duyệt đề phòng mất điện/đóng tab
-        localStorage.setItem('currentTicketNumber', currentNumber);
-    }
 
-    function resetNumber() {
-        if (confirm("Bạn có chắc chắn muốn đặt lại số thứ tự về 00 cho ngày mới không?")) {
-            currentNumber = 0;
-            document.getElementById('ticketNumber').innerText = '00';
-            localStorage.setItem('currentTicketNumber', currentNumber);
-        }
+        // Đổi trạng thái nút bấm để khách không bấm 2 lần
+        btn.innerText = "Đang xử lý...";
+        btn.disabled = true;
+
+        // Tạo đường link gửi dữ liệu đi
+        const requestUrl = API_URL + "?name=" + encodeURIComponent(nameInput) + "&phone=" + encodeURIComponent(phoneInput);
+
+        fetch(requestUrl)
+            .then(response => response.json())
+            .then(data => {
+                // Ẩn form nhập thông tin, hiện số thứ tự
+                document.getElementById('formSection').style.display = 'none';
+                document.getElementById('resultSection').style.display = 'block';
+                
+                // Hiển thị số ra màn hình (thêm số 0 đằng trước nếu bé hơn 10)
+                let ticketStr = data.ticket < 10 ? "0" + data.ticket : data.ticket;
+                document.getElementById('displayTicket').innerText = ticketStr;
+            })
+            .catch(error => {
+                alert("Có lỗi xảy ra, vui lòng thử lại sau!");
+                btn.innerText = "NHẬN SỐ THỨ TỰ";
+                btn.disabled = false;
+            });
     }
 </script>
 
